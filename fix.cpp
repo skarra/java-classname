@@ -13,7 +13,9 @@
  */
 
 #include <fstream>
+#include <chrono>
 #include <iostream>
+#include <iomanip>
 #include <cerrno>
 #include <boost/regex.hpp>
 #include <boost/filesystem.hpp>
@@ -21,6 +23,10 @@ using namespace std;
 using namespace boost;
 
 string usage = "Usage: ./fix file.java";
+
+typedef std::chrono::high_resolution_clock Time;
+typedef std::chrono::milliseconds ms;
+typedef std::chrono::duration<float> fsec;
 
 string get_file_contents(const char *filename)
 {
@@ -72,32 +78,69 @@ string parse_for_classname (string& contents)
 
 int main (int argc, char *argv[])
 {
+    /*
+     * Parse command line arguments
+     */
+
     if (argc <= 1) {
         cerr << "Usage: " << usage << endl;
         exit(1);
     }
 
-    string contents = get_file_contents(argv[1]);
-    string classname = parse_for_classname(contents);
+    int repeat = 1;
+    smatch smatches;
+    regex r("--repeat=(\\d+)");
+    if (argc >= 3 && regex_search(string(argv[2]), smatches, r)) {
+        repeat = atoi(string(smatches[1]).c_str());
+    }
 
-    filesystem::path p(argv[1]);
-    string basename = filesystem::basename(p);
+    string basename, classname;
+    auto t0 = Time::now();
 
-    cout << "Test Filename: " << argv[1] << "; ";
+    /*
+     * Parse the given java source file, and repeat as many times as requested
+     */
 
+    for (int i = 0; i < repeat; ++i) {
+        string contents = get_file_contents(argv[1]);
+        classname = parse_for_classname(contents);
+
+        filesystem::path p(argv[1]);
+        basename = filesystem::basename(p);
+    }
+    auto t1 = Time::now();
+    fsec fs = t1 - t0;
+    ms d = chrono::duration_cast<ms>(fs);
+
+    /*
+     * Compare correctness of the output and show the result. Note that as the
+     * output does not really change every run we do not have to do this
+     *  inside the loop
+     */
+
+    cout << "Test Filename: " << setw(25) << setfill('.') << left << argv[1];
     string pass;
     if (basename == classname) {
-        pass = "Passed";
+        pass = "Passed.";
     } else {
-        smatch smatches;
         regex r("^NotParsed");
         if (regex_search(classname, smatches, r) &&
             regex_search(basename, smatches, r)) {
-            pass = "Passed";
+            pass = "Passed.";
         } else {
-            pass = ".......Failed (" + classname + ")";
+            pass = "Failed (" + classname + "). ";
         }
     }
+    cout << left << setw(15) << setfill(' ') << pass;
 
-    cout << pass << endl;
+    // cout << endl << "basenmae: " << basename << "; class: " << classname;
+
+    if (repeat > 0) {
+        cout << "Total Time: " << setw(7) << fixed << right << setprecision(5)
+             << fs.count() << " sec. "
+             << "Per Iter: " << setw(6) << fixed << right << setprecision(2)
+             << d.count()*1000.0/repeat << " nanosec";
+    }
+
+    cout << endl;
 }
