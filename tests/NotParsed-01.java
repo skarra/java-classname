@@ -7,8 +7,7 @@
 
 // public class InineCommentsClass
 
-public class FirstName
+class AH
 {
     // Inline comments
 }
-

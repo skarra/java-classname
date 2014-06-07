@@ -8,11 +8,11 @@ import java.util.regex.*;
 import java.text.*;
 import java.math.*;//}}}
 
-class FirstName
+class AGWrong
 {
 }
 
-class SecondName {
+class AG {
     public static void main(String [] args) throws Exception
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

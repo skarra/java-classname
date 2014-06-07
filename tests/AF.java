@@ -8,7 +8,7 @@ import java.util.regex.*;
 import java.text.*;
 import java.math.*;//}}}
 
-class FirstName
+class AF
 {
     public static void main(String [] args) throws Exception
     {
@@ -46,5 +46,5 @@ class FirstName
     }
 }
 
-class SecondName {
+class AFWrong {
 }
