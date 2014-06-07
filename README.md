@@ -21,10 +21,16 @@ make build
 make
 ```
 
+### Execute all test cases 1000 times
+```
+make REPEAT=1000
+```
+
 ### Execute a test cases of your own
 ```
 make build
-fix <test_file.java>
+./fix test_file.java
+./fix test_file.java --repeat=1000
 ```
 # Instructions on ading new test cases
 
