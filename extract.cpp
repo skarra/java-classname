@@ -44,15 +44,13 @@ string get_file_contents(const char *filename)
 
 string parse_for_classname (string& contents)
 {
-    static const regex STR_STR(
-        "\\\"[^\\R]*?\\\"", regex::perl);
-    static const regex PUBLIC_MAIN_STR(
-        "class\\s+(\\w+)((?!class).)*public\\s+static\\s+void\\s+main",
-        regex::perl);
-    static const regex PUBLIC_CLASS_STR(
-        "public\\s+class\\s+(\\w+)", regex::perl);
-    static const regex COMMENTS_STR(
-        "(//.*?$)|(/\\*.*?\\*/)", regex::perl);
+    static const regex STR_STR("\\\"[^\\R]*?\\\"");
+    static const regex COMMENTS_STR("(//.*?$)|(/\\*.*?\\*/)");
+    static const regex PUBLIC_CLASS_STR("public\\s+class\\s+(\\w+)");
+    static const regex PUBLIC_STATIC_MAIN_STR(
+        "class\\s+(\\w+)((?!class).)*public\\s+static\\s+void\\s+main");
+    static const regex STATIC_PUBLIC_MAIN_STR(
+        "class\\s+(\\w+)((?!class).)*static\\s+public\\s+void\\s+main");
 
     // Strip all the quoted strings
     contents = regex_replace(contents, STR_STR, "", format_all);
@@ -71,9 +69,12 @@ string parse_for_classname (string& contents)
     }
 
     // Now look for any class containing a public static void main
-    if (regex_search(contents, smatches, PUBLIC_MAIN_STR)) {
+    if (regex_search(contents, smatches, PUBLIC_STATIC_MAIN_STR)) {
+        return smatches[1];
+    } else if (regex_search(contents, smatches, STATIC_PUBLIC_MAIN_STR)) {
         return smatches[1];
     }
+
 
     return "null";
 }

@@ -7,7 +7,7 @@ import java.util.regex.*;
 import java.text.*;
 import java.math.*;//}}}
 
-class Solution
+class staticPublicVoidMain
 {
     static public void main(String [] args) throws Exception
     {
