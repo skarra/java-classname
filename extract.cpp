@@ -6,8 +6,6 @@
  */
 
 /*
- * Usage: ./fix file.java
- *
  * In the specified java source find the main class name. The main class name
  * is either (a) the one marked as public, or (b) the class containing main 
  */
@@ -22,7 +20,7 @@
 using namespace std;
 using namespace boost;
 
-string usage = "Usage: ./fix file.java";
+string usage = "Usage: ./extract file.java [--repeat=<n>] [--debug]";
 
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::milliseconds ms;
@@ -44,9 +42,6 @@ string get_file_contents(const char *filename)
   throw(errno);
 }
 
-/*
- *
- */
 string parse_for_classname (string& contents)
 {
     static const regex PUBLIC_MAIN_STR(
@@ -87,11 +82,19 @@ int main (int argc, char *argv[])
         exit(1);
     }
 
-    int repeat = 1;
+    int    repeat = 1;
+    int    debug  = false;
     smatch smatches;
-    regex r("--repeat=(\\d+)");
-    if (argc >= 3 && regex_search(string(argv[2]), smatches, r)) {
-        repeat = atoi(string(smatches[1]).c_str());
+
+    regex  r("--repeat=(\\d+)");
+    regex  e("--debug");
+
+    for (int i=2; i < argc; ++i) {
+        if (regex_search(string(argv[i]), smatches, r)) {
+            repeat = atoi(string(smatches[1]).c_str());
+        } else if (regex_search(string(argv[i]), smatches, e)) {
+            debug = true;
+        }
     }
 
     string basename, classname;
@@ -118,14 +121,20 @@ int main (int argc, char *argv[])
      *  inside the loop
      */
 
-    cout << "Test Filename: " << setw(25) << setfill('.') << left << argv[1] << "\n";
     string pass;
-    cout << "Original ClassName = " << basename  << "\n";
-    cout << "className Found    = " << classname << "\n";
+
+    cout << "Test Filename: " << setw(35) << setfill('.') << left << argv[1];
+
+    if (debug) {
+        cout << endl;
+        cout << "Original ClassName = " << basename  << endl;
+        cout << "className Found    = " << classname << endl;
+    }
+
     if (basename == classname) {
         pass = "Passed.";
     } else {
-        regex r("^NotParsed");
+        regex r("^null");
         if (regex_search(classname, smatches, r) &&
             regex_search(basename, smatches, r)) {
             pass = "Passed.";
@@ -133,17 +142,14 @@ int main (int argc, char *argv[])
             pass = "FAILED (" + classname + "). ";
         }
     }
-    cout << left << setw(15) << setfill(' ') << pass;
-	cout << "\n";
+    cout << left << setw(20) << setfill('.') << pass;
 
-    // cout << endl << "basenmae: " << basename << "; class: " << classname;
-
-    if (repeat > 0) {
-        cout << "Total Time: " << setw(7) << fixed << right << setprecision(5)
-             << fs.count() << " sec. "
+    if (repeat > 1) {
+        cout << "Total Time: " << setw(7) << fixed << right
+             << setprecision(5) << fs.count() << " sec. "
              << "Per Iter: " << setw(6) << fixed << right << setprecision(2)
              << d.count()*1000.0/repeat << " nanosec";
     }
 
-    cout <<  "\n" << endl;
+    cout << endl;
 }

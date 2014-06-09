@@ -15,12 +15,12 @@ $(OUT): $(SRC)
 run: $(OUT)
 ifeq ($(strip ${REPEAT}),)
 	@echo
-	@for f in $(TESTS); do $(OUT) $$f; done
+	@for f in $(TESTS); do $(OUT) $$f ${DEBUG} ; done
 	@echo
 else
 	@echo
 	@echo "== Repeating every test ${REPEAT} times =="
 	@echo
-	@for f in $(TESTS); do $(OUT) $$f --repeat=${REPEAT}; done
+	@for f in $(TESTS); do $(OUT) $$f ${DEBUG} --repeat=${REPEAT}; done
 	@echo
 endif
