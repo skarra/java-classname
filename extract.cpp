@@ -46,11 +46,11 @@ string parse_for_classname (string& contents)
 {
     static const regex PUBLIC_MAIN_STR(
         "class\\s+(\\w+)((?!class).)*public\\s+static\\s+void\\s+main",
-        regex::perl|regex::icase);
+        regex::perl);
     static const regex PUBLIC_CLASS_STR(
-        "public\\s+class\\s+(\\w+)", regex::perl|regex::icase);
+        "public\\s+class\\s+(\\w+)", regex::perl);
     static const regex COMMENTS_STR(
-        "(//.*?$)|(/\\*.*?\\*/)", regex::perl|regex::icase);
+        "(//.*?$)|(/\\*.*?\\*/)", regex::perl);
 
     // First strip all the comments
     contents = regex_replace(contents, COMMENTS_STR, "",
