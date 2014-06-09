@@ -44,6 +44,8 @@ string get_file_contents(const char *filename)
 
 string parse_for_classname (string& contents)
 {
+    static const regex STR_STR(
+        "\\\"[^\\R]*?\\\"", regex::perl);
     static const regex PUBLIC_MAIN_STR(
         "class\\s+(\\w+)((?!class).)*public\\s+static\\s+void\\s+main",
         regex::perl);
@@ -52,9 +54,14 @@ string parse_for_classname (string& contents)
     static const regex COMMENTS_STR(
         "(//.*?$)|(/\\*.*?\\*/)", regex::perl);
 
-    // First strip all the comments
-    contents = regex_replace(contents, COMMENTS_STR, "",
-                                    format_all);
+    // Strip all the quoted strings
+    contents = regex_replace(contents, STR_STR, "", format_all);
+
+    // Strip all the comments
+    contents = regex_replace(contents, COMMENTS_STR, "", format_all);
+
+    // cout << contents;
+    // exit(1);
 
     // Now look for public class names. Just find the first one; if there
     // are more than one there is going to be a compile error any way.
