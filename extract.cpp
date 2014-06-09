@@ -45,7 +45,7 @@ string get_file_contents(const char *filename)
 }
 
 /*
- * 
+ *
  */
 string parse_for_classname (string& contents)
 {
@@ -71,9 +71,9 @@ string parse_for_classname (string& contents)
     // Now look for any class containing a public static void main
     if (regex_search(contents, smatches, PUBLIC_MAIN_STR)) {
         return smatches[1];
-    }    
+    }
 
-    return "NotParsed";
+    return "null";
 }
 
 int main (int argc, char *argv[])
@@ -118,8 +118,10 @@ int main (int argc, char *argv[])
      *  inside the loop
      */
 
-    cout << "Test Filename: " << setw(25) << setfill('.') << left << argv[1];
+    cout << "Test Filename: " << setw(25) << setfill('.') << left << argv[1] << "\n";
     string pass;
+    cout << "Original ClassName = " << basename  << "\n";
+    cout << "className Found    = " << classname << "\n";
     if (basename == classname) {
         pass = "Passed.";
     } else {
@@ -128,10 +130,11 @@ int main (int argc, char *argv[])
             regex_search(basename, smatches, r)) {
             pass = "Passed.";
         } else {
-            pass = "Failed (" + classname + "). ";
+            pass = "FAILED (" + classname + "). ";
         }
     }
     cout << left << setw(15) << setfill(' ') << pass;
+	cout << "\n";
 
     // cout << endl << "basenmae: " << basename << "; class: " << classname;
 
@@ -142,5 +145,5 @@ int main (int argc, char *argv[])
              << d.count()*1000.0/repeat << " nanosec";
     }
 
-    cout << endl;
+    cout <<  "\n" << endl;
 }

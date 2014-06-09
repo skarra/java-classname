@@ -1,7 +1,7 @@
 TESTS = $(wildcard tests/*.java)
 SRC = extract.cpp
 CXX_FLAGS = -O2 -std=c++11 -Wall -Wno-c++11-extensions
-LD_FLAGS = -lboost_regex -lboost_filesystem -lboost_system
+LD_FLAGS = -lboost_regex -lboost_filesystem -lboost_system -L/opt/boost/lib
 OUT = ./extract
 
 default: run
