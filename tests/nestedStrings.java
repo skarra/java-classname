@@ -8,7 +8,7 @@ import java.text.*;
 import java.math.*;//}}}
 
 class NoItsWrong {
-  String abc = "\"public static void main is not hee";
+  String abc = "public static void main \"public static void main ( is not hee";
 }
 
 class  nestedStrings 
