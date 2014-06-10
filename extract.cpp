@@ -48,9 +48,9 @@ string parse_for_classname (string& contents)
     static const regex COMMENTS_STR("(//.*?$)|(/\\*.*?\\*/)");
     static const regex PUBLIC_CLASS_STR("public\\s+class\\s+(\\w+)");
     static const regex PUBLIC_STATIC_MAIN_STR(
-        "class\\s+(\\w+)((?!class).)*public\\s+static\\s+void\\s+main");
+        "class\\s+(\\w+)((?!class).)*public\\s+static\\s+void\\s+main\\s*?\\(");
     static const regex STATIC_PUBLIC_MAIN_STR(
-        "class\\s+(\\w+)((?!class).)*static\\s+public\\s+void\\s+main");
+        "class\\s+(\\w+)((?!class).)*static\\s+public\\s+void\\s+main\\s*?\\(");
 
     // Strip all the quoted strings
     contents = regex_replace(contents, STR_STR, "", format_all);
