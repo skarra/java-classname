@@ -44,7 +44,7 @@ string get_file_contents(const char *filename)
 
 string parse_for_classname (string& contents)
 {
-    static const regex STR_STR("\\\"[^\\R]*?\\\"");
+    static const regex STR_STR("\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"");
     static const regex COMMENTS_STR("(//.*?$)|(/\\*.*?\\*/)");
     static const regex PUBLIC_CLASS_STR("public\\s+class\\s+(\\w+)");
     static const regex PUBLIC_STATIC_MAIN_STR(
@@ -52,7 +52,7 @@ string parse_for_classname (string& contents)
     static const regex STATIC_PUBLIC_MAIN_STR(
         "class\\s+(\\w+)((?!class).)*static\\s+public\\s+void\\s+main\\s*?\\(");
 
-    // Strip all the quoted strings
+    // Strip all the strings.
     contents = regex_replace(contents, STR_STR, "", format_all);
 
     // Strip all the comments
