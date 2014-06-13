@@ -1,4 +1,4 @@
-class NestedClass
+gclass NestedClassDecoy
 {
     class Decoy {
     }
