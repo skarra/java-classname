@@ -21,6 +21,7 @@ using namespace std;
 using namespace boost;
 
 string usage = "Usage: ./extract file.java [--repeat=<n>] [--debug]";
+bool debug = 0;
 
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::milliseconds ms;
@@ -52,13 +53,20 @@ string parse_for_classname (string& contents)
     static const regex STATIC_PUBLIC_MAIN_STR(
         "class\\s+(\\w+)((?!class).)*static\\s+public\\s+void\\s+main\\s*?\\(");
 
+    if(debug) {
+        cout << "Original contents:\n";
+        cout << contents << endl;
+    }
     // Strip all the strings.
     contents = regex_replace(contents, STR_STR, "", format_all);
 
     // Strip all the comments
     contents = regex_replace(contents, COMMENTS_STR, "", format_all);
 
-    // cout << contents;
+    if(debug) {
+        cout << "Stripped contents:\n";
+        cout << contents << endl;
+    }
     // exit(1);
 
     // Now look for public class names. Just find the first one; if there
@@ -91,7 +99,6 @@ int main (int argc, char *argv[])
     }
 
     int    repeat = 1;
-    int    debug  = false;
     smatch smatches;
 
     regex  r("--repeat=(\\d+)");
