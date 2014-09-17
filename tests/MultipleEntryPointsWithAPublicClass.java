@@ -7,17 +7,19 @@ import java.util.regex.*;
 import java.text.*;
 import java.math.*;//}}}
 
-class NoItsWrong {
-  String abc = "public static void main \"public static void main ( is not hee";
-  char   bcd = '\"';
-}
-
-class  nestedStrings 
+public class MultipleEntryPointsWithAPublicClass
 {
     public static void main(String [] args) throws Exception
     {
+        String str = "abc";
+        System.out.println("abc");
 
     }
+
 }
 
-
+class abc {
+    public static void main(String [] args) {
+        System.out.println("bcd");
+    }
+}

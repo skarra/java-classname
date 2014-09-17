@@ -7,7 +7,7 @@
 
 /*
  * In the specified java source find the main class name. The main class name
- * is either (a) the one marked as public, or (b) the class containing main 
+ * is either (a) the one marked as public, or (b) the class containing main
  */
 
 #include <fstream>
@@ -138,7 +138,7 @@ int main (int argc, char *argv[])
 
     string pass;
 
-    cout << "Test Filename: " << setw(35) << setfill('.') << left << argv[1];
+    cout << "Test Filename: " << setw(55) << setfill('.') << left << argv[1];
 
     if (debug) {
         cout << endl;

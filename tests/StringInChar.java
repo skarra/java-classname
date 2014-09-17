@@ -7,13 +7,13 @@ import java.util.regex.*;
 import java.text.*;
 import java.math.*;//}}}
 
-class Decoy{
-    String decoyString = "public static void main()";
-}
+class StringInChar
+{
+    char str = '\"';
+    public static void main(String [] args) throws Exception
+    {
 
-class MainInString{
-    public static void main() {
     }
-}
 
+}
 

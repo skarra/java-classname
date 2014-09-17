@@ -7,13 +7,15 @@ import java.util.regex.*;
 import java.text.*;
 import java.math.*;//}}}
 
-class Decoy{
-    String decoyString = "public static void main()";
-}
+// "howdya
 
-class MainInString{
-    public static void main() {
+public class UnfinishedStringsInComment
+{
+    public static void main(String [] args) throws Exception
+    {
+
     }
 }
 
+// Howdy"
 

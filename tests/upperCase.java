@@ -7,8 +7,7 @@ import java.util.regex.*;
 import java.text.*;
 import java.math.*;//}}}
 
-class decoy 
-{
+class decoy{
     public static void MAIN(String [] args)
     {
 
